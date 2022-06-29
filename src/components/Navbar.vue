@@ -12,40 +12,16 @@
                     result.value = data;
                 })
             })
-
             function logout(){
                 localStorage.clear();
                 store.dispatch('user', null);
             }
-
             return { result, logout };
         }
-    // data(){
-    //   return {
-    //     categoriesItem:{}
-    //   }
-    // },
-    // methods:{
-    //   logout(){
-    //     localStorage.clear();
-    //     this.$store.dispatch('user', null)
-    //   }
-    // },
-    // created() {
-    //   getCategories().then(response => {
-    //           console.log("response:",response);
-    //           this.categoriesItem = response.data;
-    //           console.log("inventory category:",this.categoriesItem);
-    //           this.$store.commit("getCategoryData", this.categoriesItem?.returnCategory);
-    //       }).catch(error => {
-    //           console.log(error);
-    //       })
-    // }
   }
-  // array = ['male','female','kids']
 </script>
 <template>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navvv">
     <div class="container-fluid">
         <router-link class="navbar-brand " aria-current="page" to="/" style="margin-right: 30px; font-size:30px;" >校園二手市集</router-link>
 
@@ -55,7 +31,7 @@
                     <router-link class="nav-link" aria-current="page" :to="`/${item.categoryNameEN}`">{{ item.categoryName }}</router-link>  
                 </li>    
                 <li class="nav-item">
-                <router-link class="nav-link insidefont" aria-current="page" to="/backstage">暫時後台</router-link>
+                    <router-link class="nav-link insidefont" aria-current="page" to="/backstage">暫時後台</router-link>
                 </li>
             </ul>
             <div v-if="!$store.getters['user']">
@@ -64,29 +40,58 @@
             <div v-else>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link class="insidefont" to="/personalInformation" style="text-decoration: none; color: inherit; margin-right: 15px;">個人資訊</router-link>
+                        <router-link class="insidefont" to="/personal" style="text-decoration: none; color: inherit; margin-right: 15px;">個人資訊</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="insidefont" to="/collection" style="text-decoration: none; color: inherit; margin-right: 15px;">收藏</router-link>
                     </li>
                     <li class="nav-item" >
-                        <button class="insidefont" @click="logout" style="border: none; background: none; margin-right: 15px;">
-                        登出
-                        </button>   
+                        <button class="insidefont" @click="logout" style="border: none; background: none; margin-right: 15px;">登出</button>   
                     </li>                
                 </ul>            
             </div>
         </div>
     </div>
 </nav>
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <ul class="nav justify-content-start" id="navvv">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" id="home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="aboutme">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="collection">Collection</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="contact">Contact</a>
+            </li>
+        </ul>
+        </div>
+    </nav> -->
 </template>
 <style>
+
+#navvv {
+    width: 100%;
+    padding-right: 20px;
+    position: fixed;
+    height: 100px;
+    line-height: 80px;
+    font-size: 20px;
+    margin-right: 10px;
+    background-color: white;
+    z-index: 10;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
 }
 
 .insidefont {
-  font-size:20px;
+    font-size:20px;
 }
 </style>

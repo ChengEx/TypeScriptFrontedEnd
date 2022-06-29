@@ -1,6 +1,6 @@
 <template>
     <div>
-        hi this is personal information page
+        hi this is personal shop page
     </div>
 </template>
 

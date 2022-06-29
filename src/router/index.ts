@@ -3,7 +3,11 @@ import HomeView from '../views/HomeView.vue';
 import SideBarView from '../views/SideBarView.vue';
 import LoginView from '../views/LoginView.vue';
 import SignUpView from '../views/SignUpView.vue';
-import PersonalInformationView from '../views/PersonalInformationView.vue';
+import PersonalView from '../views/PersonalView.vue';
+import PersonalInformationView from '../views/PersonalInformationView.vue'
+import PersonalShopView from '../views/PersonalShopView.vue';
+import PersonalOrderView from '../views/PersonalOrderView.vue';
+import ChatMessageView from '../views/ChatMessageView.vue';
 import CollectionView from '../views/CollectionView.vue';
 
 const history = createWebHashHistory();
@@ -31,9 +35,36 @@ const router = createRouter({
             component: SignUpView
         },
         {
-            path:'/personalInformation',
-            name:'personalInformation',
-            component: PersonalInformationView
+            path:'/personal',
+            name:'personal',
+            component: PersonalView,
+            children:[
+                {
+                    path:'/personal/information',
+                    name:'information',
+                    component: PersonalInformationView,
+                    props: true
+                },
+                {
+                    path:'/personal/order',
+                    name:'order',
+                    component: PersonalOrderView,
+                    props: true
+                },
+                {
+                    path:'/personal/shop',
+                    name:'shop',
+                    component: PersonalShopView,
+                    props: true
+                },
+                {
+                    path:'/personal/message',
+                    name:'message',
+                    component: ChatMessageView,
+                    props: true
+                }
+
+            ]
         },
         {
             path:'/collection',

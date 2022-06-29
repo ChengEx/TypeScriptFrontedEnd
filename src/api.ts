@@ -22,3 +22,6 @@ export const getAllCategory = () => {
 export const login = (data: object) => {
     return APIRequest.post('/api/student/login', data);
 }
+export const signup = (data: object) => {
+    return APIRequest.post('/api/student/register', data);
+}

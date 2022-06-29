@@ -1,7 +1,7 @@
 <template>
   <Navbar/>
   <router-view :key="$route.fullPath"/>
-  <Footers/>
+  <!-- <Footers/> -->
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue'; 
@@ -24,4 +24,5 @@
   text-align: center;
   color: #2c3e50;
 }
+
 </style>
