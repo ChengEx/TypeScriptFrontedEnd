@@ -13,8 +13,8 @@
                 password_confirm:'',
                 name:'',
                 email:'',
+                gender:'',
                 phone:'',
-
             })
 
             const rules = computed(()=> {
@@ -24,6 +24,7 @@
                     password_confirm: {required, sameAs:sameAs(state.password)},
                     name: {required, minLength:minLength(2)},
                     email: {required, email},
+                    gender:{required},
                     phone: {required, minLength:minLength(10)},
                 }
             })
@@ -55,6 +56,10 @@
                     {item:'基隆市'},
                     {item:'新竹市'},
                     {item:'嘉義市'},
+                ],
+                genderList:[
+                    {item:'男'},
+                    {item:'女'}
                 ]
             }
         },
@@ -67,11 +72,12 @@
                         password: this.state.password,
                         name: this.state.name,
                         email: this.state.email,
+                        gender: this.state.gender,
                         phone: this.state.phone,    
                     }).then((res)=>{
                         console.log(res)
                         alert('Form successfully submit')
-                        this.$router.push('/signin')  
+                        this.$router.push('/login')  
                     }).catch((error)=>{
                         alert(error.response.data.message)                    
                     })
@@ -138,22 +144,35 @@
                     <div class="col-3">
                         <h5 class="title">姓名:</h5>
                     </div>                             
-                    <div class="col-3">
+                    <div class="col-4">
                         <input class="field_class" name="name_txt"  v-model="state.name"  type="text" placeholder="Name">
                         <span v-if="v$.name.$error">
                             {{ v$.name.$errors[0].$message }}
                         </span> 
                     </div>
                     <div class="col-2">
+                        <h5 class="title">性別:</h5>
+                    </div>
+                
+                    <div class="col-3">
+                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="state.gender">
+                            <option v-for="gender in genderList" :value="gender.item" >
+                                {{ gender.item }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-3">
                         <h5 class="title">電話:</h5>
                     </div>  
-                    <div class="col-4">
+                    <div class="col-9">
                         <input class="field_class" name="phone_txt" v-model="state.phone"  type="text" placeholder="Phone">
                         <span v-if="v$.phone.$error">
                             {{ v$.phone.$errors[0].$message }}
                         </span> 
                     </div>
-                </div>                   
+                </div>                  
                 <button class="submit_class" type="submit" form="signup_form">註冊</button>
             </div>
         </form>

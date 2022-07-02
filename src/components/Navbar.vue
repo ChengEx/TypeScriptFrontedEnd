@@ -1,20 +1,24 @@
 <script lang="ts">
     import { onMounted } from '@vue/runtime-core';
     import { getAllCategory } from '../api';
-    import { ref } from 'vue';
+    import { ref, reactive } from 'vue';
+    import { useRouter } from 'vue-router';
     import { useStore } from 'vuex';
     export default {
         setup() {
             const result = ref({});
             const store = useStore();
-            onMounted(async () => {
-                await getAllCategory().then(data => {
-                    result.value = data;
+            const router = useRouter();
+
+            onMounted(async () => { 
+                await getAllCategory().then(res => {
+                    result.value = res?.data?.categoryObj;
                 })
             })
             function logout(){
-                localStorage.clear();
+                sessionStorage.clear();
                 store.dispatch('user', null);
+                router.push('/');
             }
             return { result, logout };
         }
@@ -27,7 +31,7 @@
 
         <div class="collapse navbar-collapse mt-3 mb-3" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">                
-                <li v-for="item in result?.data?.categoryObj" class="nav-item insidefont" style="margin-right: 20px;">
+                <li v-for="item in result" class="nav-item insidefont" style="margin-right: 20px;">
                     <router-link class="nav-link" aria-current="page" :to="`/${item.categoryNameEN}`">{{ item.categoryName }}</router-link>  
                 </li>    
                 <li class="nav-item">
@@ -53,24 +57,6 @@
         </div>
     </div>
 </nav>
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <ul class="nav justify-content-start" id="navvv">
-            <li class="nav-item">
-                <a class="nav-link active" href="#" id="home">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="aboutme">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="collection">Collection</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="contact">Contact</a>
-            </li>
-        </ul>
-        </div>
-    </nav> -->
 </template>
 <style>
 

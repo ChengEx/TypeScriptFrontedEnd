@@ -1,20 +1,73 @@
+<script lang="ts">
+    import { defineComponent, ref, watch,  } from "vue"
+    import { useStore } from "vuex";
+    export default defineComponent({
+        setup() {
+            const store = useStore();
+            let photo = ref();
+            let username = ref();
+
+            photo.value = store.getters['user']?.studentObj?.photo;
+            username.value = store.getters['user']?.studentObj?.name;
+
+            const student = JSON.parse(<string>sessionStorage.getItem('profile')).studentObj; 
+
+            watch(() => store.state.user, (val, old) => {
+                console.log("state2",val);
+                if(val != null) {
+                    photo.value = val?.studentObj?.photo;
+                    username.value = val?.studentObj?.name;
+                }
+                
+                console.log('get watch to update')   
+            },{
+                    immediate: true
+            });
+            return {
+                student, photo, username
+            }
+        },
+        data(){      
+            return {
+
+            }
+        }
+    })
+</script>
+
 <template>
     <div id="personalPage">
         <div id="leftBar">
-            <img src="../assets/logo.png" alt="Avatar"/>
+            <div v-if="photo == null">
+                <div v-if="student.gender == '男'">
+                    <img class="side_img" src="../assets/img/boy.png" alt="Avatar"/>
+                </div>
+                <div v-if="student.gender == '女'">
+                    <img class="side_img" src="../assets/img/woman.png" alt="Avatar"/>
+                </div>
+            </div>
+            <div v-else>
+                <div>
+                    <img class="side_img" :src="photo"/>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <span>{{ username }} 您好 </span>
+            </div>
+            
+            
             <ul class="personalSideBar">
                 <li>
-                    <router-link to="/personal/information">
-                        <span>
-                            個人資訊
-                        </span>
-                    </router-link>
+                    <router-link to="/personal/information">個人資訊</router-link>
+                </li>
+                <li>
+                    <router-link to="/personal/changepassword">更改密碼</router-link>
                 </li>
                 <li>
                     <router-link to="/personal/order">查看購買商品</router-link>
                 </li>
                 <li>
-                    <router-link to="/personal/shop">個人商店</router-link>
+                    <router-link to="/personal/shop">個人販售商品</router-link>
                 </li>
                 <li>
                     <router-link to="/personal/message">聊天室</router-link>
@@ -22,43 +75,17 @@
             </ul>
         </div>
         <div id="rightPage">
-            <router-view></router-view>
-            <!-- <p>
-                The most advantageous free personal website templates to showcase your portfolio, resume, vCard, or brand with epic style. These templates are highly customizable and ready to take your brand website to the next level. And if you are not familiar with any of them, be prepared to be blown away due to their highest standards.
-
-We have many free personal and online CV website templates based on Bootstrap at your disposal, and many more will drop shortly. Bear in mind, what you like, you can quickly improve and alter to your particular requirements. Meaning, do not feel limited in any regard and go as creative and artistic with your web appearance look as you would like. But most importantly, persuade your potential clients and employers and have them unable to resist your talent.
-
-List of the best personal website templatesThe most advantageous free personal website templates to showcase your portfolio, resume, vCard, or brand with epic style. These templates are highly customizable and ready to take your brand website to the next level. And if you are not familiar with any of them, be prepared to be blown away due to their highest standards.
-
-We have many free personal and online CV website templates based on Bootstrap at your disposal, and many more will drop shortly. Bear in mind, what you like, you can quickly improve and alter to your particular requirements. Meaning, do not feel limited in any regard and go as creative and artistic with your web appearance look as you would like. But most importantly, persuade your potential clients and employers and have them unable to resist your talent.
-
-List of the best personal website templatesThe most advantageous free personal website templates to showcase your portfolio, resume, vCard, or brand with epic style. These templates are highly customizable and ready to take your brand website to the next level. And if you are not familiar with any of them, be prepared to be blown away due to their highest standards.
-
-We have many free personal and online CV website templates based on Bootstrap at your disposal, and many more will drop shortly. Bear in mind, what you like, you can quickly improve and alter to your particular requirements. Meaning, do not feel limited in any regard and go as creative and artistic with your web appearance look as you would like. But most importantly, persuade your potential clients and employers and have them unable to resist your talent.
-
-List of the best personal website templatesThe most advantageous free personal website templates to showcase your portfolio, resume, vCard, or brand with epic style. These templates are highly customizable and ready to take your brand website to the next level. And if you are not familiar with any of them, be prepared to be blown away due to their highest standards.
-
-We have many free personal and online CV website templates based on Bootstrap at your disposal, and many more will drop shortly. Bear in mind, what you like, you can quickly improve and alter to your particular requirements. Meaning, do not feel limited in any regard and go as creative and artistic with your web appearance look as you would like. But most importantly, persuade your potential clients and employers and have them unable to resist your talent.
-
-List of the best personal website templatesThe most advantageous free personal website templates to showcase your portfolio, resume, vCard, or brand with epic style. These templates are highly customizable and ready to take your brand website to the next level. And if you are not familiar with any of them, be prepared to be blown away due to their highest standards.
-
-We have many free personal and online CV website templates based on Bootstrap at your disposal, and many more will drop shortly. Bear in mind, what you like, you can quickly improve and alter to your particular requirements. Meaning, do not feel limited in any regard and go as creative and artistic with your web appearance look as you would like. But most importantly, persuade your potential clients and employers and have them unable to resist your talent.
-
-List of the best personal website templates
-            </p> -->
+            <router-view :key="$route.fullPath"></router-view>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent } from "vue"
-    export default defineComponent({
-
-    })
-</script>
-
 <style>
-img {
+.side_img {
+    height: 200px;
+    width: 200px;
+    border: 3px solid #555;
+    border-color: black;
     border-radius: 50%;
 }
 
@@ -76,19 +103,33 @@ img {
     width: 500px;
     height: 100%;
     padding: 30px;
-    background-color: red;
+    background-color: gainsboro;
 }
 
 #leftBar ul{
     list-style-type: none;
     padding-left: 0;
 }
+
+#leftBar ul li{
+    margin: 20px 0;
+}
+
+#leftBar ul li a{
+    color: black;
+    margin: 10px;
+    text-decoration: none;
+}
+
+#leftBar ul li a:hover{
+    color: gray;
+}
+
 #rightPage {
     margin-left: 500px;
     margin-top: 100px;
     padding: 50px;
-    height: 1500px;
+    /* height: 1500px; */
     width:100%;
-    background-color: rgb(139, 59, 59);
 }
 </style>

@@ -2,10 +2,10 @@
     <Carousel/>
     <div class="container">  
         <div class="row">
-            <div class="col-6">
+            <div class="col-6 notyet">
                 test1
             </div>
-            <div class="col-6">
+            <div class="col-6 notyet">
                 test2
             </div>
         </div>
@@ -26,7 +26,7 @@ export default defineComponent({
 })
 </script>
 <style>
-    .col-6 {
+    .notyet {
         height:400px;
         background-color: yellow;
     }

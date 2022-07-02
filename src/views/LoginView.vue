@@ -43,15 +43,15 @@ export default defineComponent({
 
         const LoginSubmit = () => {
             login(loginForm).then(res => {
-                console.log(res.data);
-                localStorage.setItem('profile', JSON.stringify(res.data));
+                //console.log(res.data);
+                sessionStorage.setItem('profile', JSON.stringify(res.data));
                 store.dispatch('user',res.data);
                 router.push('/');
             }).catch((error)=>{
                 alert(error.response.data.message)
             })
         }
-        return { loginForm, LoginSubmit}
+        return { loginForm, LoginSubmit }
     }
 })
 </script>

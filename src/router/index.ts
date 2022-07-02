@@ -9,6 +9,9 @@ import PersonalShopView from '../views/PersonalShopView.vue';
 import PersonalOrderView from '../views/PersonalOrderView.vue';
 import ChatMessageView from '../views/ChatMessageView.vue';
 import CollectionView from '../views/CollectionView.vue';
+import PersonalChangePasswordView from '../views/PersonalChangePasswordView.vue';
+import PersonalShopEditProductView from '../views/PersonalShopEditProductView.vue';
+import PersonalShopListProductView from '../views/PersonalShopListProductView.vue';
 
 const history = createWebHashHistory();
 const router = createRouter({
@@ -43,25 +46,43 @@ const router = createRouter({
                     path:'/personal/information',
                     name:'information',
                     component: PersonalInformationView,
-                    props: true
+                },
+                {
+                    path:'/personal/changepassword',
+                    name:'changepassword',
+                    component: PersonalChangePasswordView
                 },
                 {
                     path:'/personal/order',
                     name:'order',
                     component: PersonalOrderView,
-                    props: true
                 },
                 {
                     path:'/personal/shop',
                     name:'shop',
                     component: PersonalShopView,
-                    props: true
+                    children: [
+                        // {
+                        //     path: '',
+                        //     name: 'personalProduct',
+                        //     redirect: { name: 'shop_personalProduct' }
+                        // },
+                        {
+                            path:'',
+                            name:'shop_personalProduct',
+                            component: PersonalShopListProductView,
+                        },
+                        {
+                            path:'/personal/shop/editProduct',
+                            name:'shop_editProduct',
+                            component: PersonalShopEditProductView,
+                        }   
+                    ]
                 },
                 {
                     path:'/personal/message',
                     name:'message',
                     component: ChatMessageView,
-                    props: true
                 }
 
             ]
