@@ -8,18 +8,9 @@ type updateInformationInterface = {
 
 export default createStore({
     state: {
-        // user: JSON.parse(<string>localStorage.getItem('profile')), 
-        // user: {
-        //     studentObj:{
-        //         _id:'',
-        //         name:'',
-        //         token:'',
-        //         email:'',
-        //         phone:''
-        //     }
-        // }, 
         user: null,
-        photo: null  
+        photo: null,
+        category: null
     },
     getters: {
         user: (state) => {
@@ -27,6 +18,9 @@ export default createStore({
         },
         photo: (state) => {
             return state.photo;
+        },
+        category: (state) => {
+            return state.category;
         }
     },
 
@@ -36,7 +30,11 @@ export default createStore({
         },
         photo(context, photo) {
             context.commit('photo', photo);
+        },
+        category(context, category) {
+            context.commit('category', category);
         }
+
 
     },
     mutations:{
@@ -45,6 +43,9 @@ export default createStore({
         },
         photo(state, photo){
             state.photo = photo;
+        },
+        category(state, category){
+            state.category = category;
         }
     }
   })

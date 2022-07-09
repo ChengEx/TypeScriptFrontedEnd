@@ -100,7 +100,7 @@
 #leftBar{
     position: fixed;
     top: 100px;
-    width: 500px;
+    width: 30%;
     height: 100%;
     padding: 30px;
     background-color: gainsboro;
@@ -127,7 +127,7 @@
 
 #rightPage {
     margin-left: 500px;
-    margin-top: 100px;
+    margin-top: 50px;
     padding: 50px;
     /* height: 1500px; */
     width:100%;

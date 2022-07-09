@@ -12,7 +12,9 @@
 
             onMounted(async () => { 
                 await getAllCategory().then(res => {
+                    console.log("res",res);
                     result.value = res?.data?.categoryObj;
+                    store.dispatch('category',res?.data?.categoryObj);
                 })
             })
             function logout(){
@@ -34,9 +36,9 @@
                 <li v-for="item in result" class="nav-item insidefont" style="margin-right: 20px;">
                     <router-link class="nav-link" aria-current="page" :to="`/${item.categoryNameEN}`">{{ item.categoryName }}</router-link>  
                 </li>    
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <router-link class="nav-link insidefont" aria-current="page" to="/backstage">暫時後台</router-link>
-                </li>
+                </li> -->
             </ul>
             <div v-if="!$store.getters['user']">
                 <router-link class="nav-link insidefont mr-5" to="/login" style="text-decoration: none; color: inherit;">登入</router-link>

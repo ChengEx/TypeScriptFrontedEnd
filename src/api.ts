@@ -9,10 +9,7 @@ const APIRequest = axios.create({
 
 //axios instance攔截器
 APIRequest.interceptors.request.use((req: any)=>{  
-  //if (localStorage.getItem('profile')) {
   if (sessionStorage.getItem('profile')) {
-    // console.log(localStorage.getItem('profile'))
-    // req.headers.Authorization = `Bearer ${JSON.parse(<string>localStorage.getItem('profile')).token}`;
     req.headers.Authorization = `Bearer ${JSON.parse(<string>sessionStorage.getItem('profile')).token}`;
   }
   return req;
@@ -20,6 +17,9 @@ APIRequest.interceptors.request.use((req: any)=>{
 
 export const getAllCategory = () => {
   return APIRequest.get('/api/category/getAll');
+}
+export const getCategoryByPath = (path: object) => {
+  return APIRequest.post('/api/category/getCategoryByPath', path);
 }
 export const login = (loginData: object) => {
   return APIRequest.post('/api/student/login', loginData);
@@ -35,4 +35,25 @@ export const updateInformation = (updateData: object) => {
 }
 export const changePasswrod = (passwordData: object) => {
   return APIRequest.post('/api/student/changePassword', passwordData);
+}
+export const addProduct = (addProductData: object) => {
+  return APIRequest.post('/api/product/addProduct', addProductData);
+}
+export const getProductListByCategory = (category: object) => {
+  return APIRequest.post('/api/product/getProductListByCategory', category);
+}
+export const getProductListBySubCategory = (subcategory: object) => {
+  return APIRequest.post('/api/product/getProductListBySubCategory', subcategory);
+}
+export const getProductById = (productId: object) => {
+  return APIRequest.post('/api/product/getProductById', productId);
+}
+export const getProductListByUserId = (userId: object) => {
+  return APIRequest.post('/api/product/getProductListByUserId', userId);
+}
+export const updateProductById = (updateProductData: object) => {
+  return APIRequest.post('/api/product/updateProductById', updateProductData);
+}
+export const deleteProductById = (productId: object) => {
+  return APIRequest.post('/api/product/deleteProductById', productId);
 }

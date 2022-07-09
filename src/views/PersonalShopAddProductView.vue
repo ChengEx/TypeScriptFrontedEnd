@@ -1,41 +1,19 @@
 <script lang="ts">
     import { defineComponent, onMounted, reactive, ref, watch } from "vue";
-    import { useRoute, useRouter } from "vue-router";
+    import { useRouter } from "vue-router";
     import { useStore } from "vuex";
-    import { getAllCategory, getProductById, updateProductById } from '../api';
+    import { getAllCategory, addProduct } from '../api';
     export default defineComponent({
         setup() {
             const router = useRouter();
-            const route = useRoute();
             const store = useStore();
-            const product = reactive({
-                getProductList:{
-                    _id:'',
-                    name: '',
-                    category: '',
-                    subcategory: '',
-                    createdAt: '',
-                    productDetail: {         
-                        images: [],
-                        description: '',
-                        price: 0,
-                        status: '',
-                    },
-                    // product creator
-                    createdBy:{
-                        name: '',
-                        photo: '',
-                        phone: '',
-                        email: ''
-                    }
-                }
-            });
-
             let addProductObj = reactive({
                 _id: store.getters['user']?.studentObj?._id,
                 name:'',
                 category:'',
+                categoryEN:'',
                 subcategory:'',
+                subcategoryEN:'',
                 price: 0,
                 description:'',
                 status:'',
@@ -44,13 +22,15 @@
 
             const categoryList = reactive({
                 list:[{
-                    categoryName:'',
+                    categoryName: '',
+                    categoryNameEN: '',
                     subCategory:[]
                 }]
             });
             const subCategoryList = reactive({
                 list:[{
-                    subCategoryName:''
+                    subCategoryName:'',
+                    subCategoryNameEN: ''
                 }]
             });
             const statusList = reactive({
@@ -97,7 +77,7 @@
                 })
             }
 
-            watch(() => product.getProductList.category, (val, old) =>{
+            watch(() => addProductObj.category, (val, old) =>{
                 console.log("old", val);
                 categoryList.list.forEach(element => {                 
                     if(val === element.categoryName){
@@ -111,30 +91,23 @@
                 await getAllCategory().then(res=> {
                     categoryList.list = res?.data?.categoryObj;     
                 })
-                await getProductById({ 
-                    _id: route.params.id 
-                }).then(res => {
-                    product.getProductList = res?.data?.productObj;
-                    imgArray = product.getProductList.productDetail.images;
-
-                    console.log("xxx",product.getProductList);
-                })
             })
-            async function updateProductSubmit() {
-                //console.log("check",product.getProductList);
-                await updateProductById({
-                    _id: product.getProductList._id,
-                    name: product.getProductList.name,
-                    category: product.getProductList.category,
-                    subcategory: product.getProductList.subcategory,
-                    images: product.getProductList.productDetail.images,
-                    description: product.getProductList.productDetail.description,
-                    price: product.getProductList.productDetail.price,
-                    status: product.getProductList.productDetail.status
+            async function addProductSubmit() {
+                addProductObj.photo = <any>imgArray;
+                await addProduct({
+                    _id: addProductObj._id,
+                    name: addProductObj.name,
+                    category: addProductObj.category,
+                    subcategory: addProductObj.subcategory,
+                    images: addProductObj.photo,
+                    description: addProductObj.description,
+                    price: addProductObj.price,
+                    status: addProductObj.status
                 }).then(res => {
                     console.log("success",res);
-                    alert("更新成功")
+                    alert("新增成功");
                 })
+
                 router.push('/personal/shop');
             }
             function cancel() {
@@ -148,13 +121,13 @@
             }
             
             return {
-                product, addProductObj, updateProductSubmit, categoryList, cancel, subCategoryList, statusList, picc, onfile, deletePhoto, imgArray
+                addProductObj, addProductSubmit, categoryList, cancel, subCategoryList, statusList, picc, onfile, deletePhoto, imgArray
             }
         }
     })
 </script>
 <template>
-    <form id="add_Product_form" @submit.prevent="updateProductSubmit" method="post">
+    <form id="add_Product_form" @submit.prevent="addProductSubmit" method="post">
         <div class="pic" style="padding-left: 0px;">
             <div class="addProduct_left">
 
@@ -163,7 +136,7 @@
                     <input name="file_input" type="file" @change.prevent="onfile">
                 </div>
                 <div class="mutiple_pic_box">                       
-                    <div v-for="(image, key) in product.getProductList.productDetail.images" class="img_box">
+                    <div v-for="(image, key) in imgArray" class="img_box">
                         <img class="mutiple_pic" :src="image" />
                         <button class="multiple_btn" @click.prevent="deletePhoto(image)">
                             <img class="multiple_btn_icon" src="../assets/img/close.png" />
@@ -178,7 +151,7 @@
                         <span>商品名稱:</span>
                     </div>
                     <div class="col-8">
-                        <input class="field_class" name="name" type="text" v-model="product.getProductList.name" />
+                        <input class="field_class" name="name" type="text" v-model="addProductObj.name" />
                     </div>   
                 </div>
                 <div class="row each_col">
@@ -186,7 +159,7 @@
                         <span>分類:</span>
                     </div>
                     <div class="col-8">
-                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="product.getProductList.category">
+                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="addProductObj.category">
                             <option v-for="item in categoryList.list" :value="item.categoryName">
                                 {{ item.categoryName }}
                             </option>
@@ -198,7 +171,7 @@
                         <span>子分類:</span>
                     </div>
                     <div class="col-8">
-                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="product.getProductList.subcategory">
+                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="addProductObj.subcategory">
                             <option v-for="item in subCategoryList.list" :value="item.subCategoryName">
                                 {{ item.subCategoryName }}
                             </option>
@@ -211,7 +184,7 @@
                         <span>售價:</span>
                     </div>
                     <div class="col-8">
-                        <input class="field_class" name="price" type="text" v-model="product.getProductList.productDetail.price" />
+                        <input class="field_class" name="price" type="text" v-model="addProductObj.price" />
                     </div>
                 </div>
                 <div class="row each_col">
@@ -219,7 +192,7 @@
                         <span>商品狀態:</span>
                     </div>
                     <div class="col-8">
-                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="product.getProductList.productDetail.status">
+                        <select class="form-select form-select-sm field_class" aria-label="Default select example" v-model="addProductObj.status">
                             <option v-for="item in statusList.list" :value="item.statusItem">
                                 {{ item.statusItem }}
                             </option>
@@ -233,7 +206,7 @@
                     <div class="col-8">
                         <textarea name="mytext"
                             style="margin-top: 10px; padding:5px"
-                            v-model="product.getProductList.productDetail.description"
+                            v-model="addProductObj.description"
                             required>
                         </textarea>
                     </div>
@@ -244,7 +217,7 @@
                         <button class="btn btn-secondary update_Btn" type="submit" @click="cancel" >取消</button>
                     </div>
                     <div class="col-2">
-                        <button class="btn btn-success update_Btn" type="submit" form="add_Product_form" >更新</button>
+                        <button class="btn btn-success update_Btn" type="submit" form="add_Product_form" >新增</button>
                     </div>
                 </div>
 

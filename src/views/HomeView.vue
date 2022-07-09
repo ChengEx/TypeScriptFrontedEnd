@@ -20,9 +20,7 @@ export default defineComponent({
     components:{
         Carousel
     },
-    data(){
-        
-    },
+
 })
 </script>
 <style>

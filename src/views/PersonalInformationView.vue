@@ -85,7 +85,7 @@
                     <div class="col-2 font_span">
                         <span>姓名:</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <input class="field_class" name="name" type="text" v-model="student.name" />
                     </div>
                     
@@ -94,7 +94,7 @@
                     <div class="col-2 font_span">
                         <span>信箱:</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <input class="field_class" name="email" type="text" v-model="student.email" />
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                     <div class="col-2 font_span">
                         <span>手機:</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <input class="field_class" name="phone" type="text" v-model="student.phone" />
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <div class="col-2 font_span">
                         <span>介紹:</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <textarea name="mytext"
                             style="margin-top: 10px; padding:5px"
                             v-model="student.description"
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="row each_col button_row" style="text-align: right;">
-                    <div class="col-8">
+                    <div class="col-10">
                         <button class="btn btn-success update_Btn" type="submit" form="update_Information_form" >更新資料</button>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
     }
     .information_left {
         margin-top: 50px;
-        margin-left: 150px;
+        margin-left: 80px;
     }
     .information_left .input_file {
         margin-top: 50px;

@@ -10,8 +10,12 @@ import PersonalOrderView from '../views/PersonalOrderView.vue';
 import ChatMessageView from '../views/ChatMessageView.vue';
 import CollectionView from '../views/CollectionView.vue';
 import PersonalChangePasswordView from '../views/PersonalChangePasswordView.vue';
+import PersonalShopAddProductView from '../views/PersonalShopAddProductView.vue';
 import PersonalShopEditProductView from '../views/PersonalShopEditProductView.vue';
 import PersonalShopListProductView from '../views/PersonalShopListProductView.vue';
+
+import ProductsView from '../views/ProductsView.vue';
+import ProductDetailView from '../views/ProductDetailView.vue';
 
 const history = createWebHashHistory();
 const router = createRouter({
@@ -22,10 +26,41 @@ const router = createRouter({
             name:'home',
             component: HomeView
         },
+        // {
+        //     path:'/:category',
+        //     name:'sidebar',
+        //     component: SideBarView,
+        //     // children:[
+        //     //     {
+        //     //         path:'/:category/:type',
+        //     //         name:'product',
+        //     //         component: ProductsView,
+        //     //     }
+        //     // ]
+        // },
+        // {
+        //     path:'/furniture',
+        //     name:'sidebar',
+        //     component: SideBarView,
+        //     children:[
+        //         {
+        //             path:'/furniture/table',
+        //             name:'product',
+        //             component: ProductsView
+        //         }
+        //     ]
+        // },
         {
             path:'/:category',
             name:'sidebar',
-            component: SideBarView
+            component: SideBarView,
+            children:[
+                {
+                    path:'/:category/:type',
+                    name:'product',
+                    component: ProductsView,
+                }
+            ]
         },
         {
             path:'/login',
@@ -62,21 +97,21 @@ const router = createRouter({
                     name:'shop',
                     component: PersonalShopView,
                     children: [
-                        // {
-                        //     path: '',
-                        //     name: 'personalProduct',
-                        //     redirect: { name: 'shop_personalProduct' }
-                        // },
                         {
                             path:'',
                             name:'shop_personalProduct',
                             component: PersonalShopListProductView,
                         },
                         {
-                            path:'/personal/shop/editProduct',
+                            path:'/personal/shop/addProduct',
+                            name:'shop_addProduct',
+                            component: PersonalShopAddProductView,
+                        },
+                        {
+                            path:'/personal/shop/editProduct/:id',
                             name:'shop_editProduct',
-                            component: PersonalShopEditProductView,
-                        }   
+                            component: PersonalShopEditProductView
+                        }
                     ]
                 },
                 {
@@ -91,7 +126,12 @@ const router = createRouter({
             path:'/collection',
             name:'collection',
             component: CollectionView
-        }
+        },
+        {
+            path:'/product/:id',
+            name:'productdetail',
+            component: ProductDetailView
+        },
     ]
 })
 
