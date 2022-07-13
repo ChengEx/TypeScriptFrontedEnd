@@ -5,7 +5,7 @@
                 <label>Account:</label>
                 <input class="field_class" name="login_txt" type="text" placeholder="email" v-model="loginForm.username" autofocus>
                 <label>Password:</label>
-                <input id="pass" class="field_class" name="password_txt" type="password"  placeholder="password" v-model="loginForm.password">
+                <input id="pass" class="field_class" name="password_txt" type="password" placeholder="password" v-model="loginForm.password">
                 <button class="submit_class" type="submit" form="login_form">Login</button>
             </div>
             <div class="info_div">
