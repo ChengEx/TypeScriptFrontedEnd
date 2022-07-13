@@ -100,7 +100,7 @@
 #leftBar{
     position: fixed;
     top: 100px;
-    width: 30%;
+    width: 25%;
     height: 100%;
     padding: 30px;
     background-color: gainsboro;

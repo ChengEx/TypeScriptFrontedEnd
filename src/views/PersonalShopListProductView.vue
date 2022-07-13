@@ -6,6 +6,7 @@
 
     export default defineComponent({
         setup() {
+
             const productList = reactive({
                 list:[
                     {
@@ -20,6 +21,7 @@
                 ]
             })
             const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const userId = store.getters['user']?.studentObj?._id;
             onMounted(async() => {
                 await getProductListByUserId({
@@ -75,7 +77,7 @@
     <div class="row" style="margin-top: 20px;">
         <!-- <ProductCard v-for="(product,index) in productList.list" :key="index" :product="product" />   -->
         <div class="card col-3" v-for="(product,index) in productList.list" :key="index" style=" border: none">
-            <div style="border: 2px  solid gray; border-radius: 5px; padding: 2px;">
+            <div style="border: 2px  solid gray; border-radius: 5px; padding: 2px; margin:10px">
                 <div class="row" style="display: flex; float: right; margin: 0 ; --bs-gutter-x: 0">
                     <button class="edit_delete_btn">
                         <router-link :to="`/personal/shop/editProduct/${product._id}`">
@@ -87,7 +89,7 @@
                     </button>
                 </div>
                 <router-link :to="`/product/${product._id}`" style="text-decoration: none; color: inherit;">
-                    <img class="card-img-top mt-1" :src="product?.productDetail?.images[0]">
+                    <img class="card-img-top mt-1 pCard_img " :src="product?.productDetail?.images[0]">
                     <div class="card-body">
                         <div class="row p-0 mt-3">
                         <h5 class="col-auto me-auto p-0">{{product.name}}</h5>
@@ -102,4 +104,10 @@
 </template>
 <style>
 
+.pCard_img {
+    float: left;
+    width: 100%;
+    height: 273px;
+    object-fit: cover;
+}
 </style>

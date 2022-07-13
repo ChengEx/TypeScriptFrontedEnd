@@ -7,6 +7,7 @@
     export default defineComponent({
         setup() {
             const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const student = reactive({
                 _id:'',
                 name:'',

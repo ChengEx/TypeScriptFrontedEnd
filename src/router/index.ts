@@ -56,6 +56,11 @@ const router = createRouter({
             component: SideBarView,
             children:[
                 {
+                    path:'',
+                    name:'product_default',
+                    component: ProductsView,
+                },
+                {
                     path:'/:category/:type',
                     name:'product',
                     component: ProductsView,
@@ -77,6 +82,11 @@ const router = createRouter({
             name:'personal',
             component: PersonalView,
             children:[
+                {
+                    path:'',
+                    name:'information_default',
+                    component: PersonalInformationView,
+                },
                 {
                     path:'/personal/information',
                     name:'information',

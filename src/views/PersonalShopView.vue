@@ -1,8 +1,10 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+    import { defineComponent, ref } from "vue";
+    import { useStore } from 'vuex';
     export default defineComponent({
         setup() {
-            
+            const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
         }
     })
 

@@ -1,33 +1,60 @@
 <script lang="ts">
-    import { defineComponent, onMounted, reactive } from "vue";
+    import { defineComponent, onMounted, reactive, ref } from "vue";
     import { useRoute } from "vue-router";
-    import { getProductListByCategory } from '../api';
+    import { useStore } from 'vuex';
+    import { getProductListByCategory, getProductListBySubCategory } from '../api';
     // import SideBarViewVue from "./SideBarView.vue";
+    import ProductCard from "../components/ProductCard.vue";
     export default defineComponent({
         setup() {
             const route = useRoute();
+            const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const productList = reactive({
                 list:[]
             })
+            const mainPath = ref();
+            const secondPath = ref();
+
             onMounted(async ()=> {
-                console.log(route.path);
-                // await getProductListByCategory(
-                //     {category: route.path}
-                // ).then(res => {
-                //     console.log("res",res);
-                //     productList.list = res?.data?.returnObjList;
-                // })
+
+                const splitPath = route.path.split('/');
+                if(splitPath.length === 2) {
+                    mainPath.value = splitPath[1];
+                    console.log("cate", route.params.category);
+                    await getProductListByCategory(
+                        { category: route.params.category }
+                    ).then(res=> {
+                        productList.list = res?.data?.returnObjList;
+                    })
+                }
+                else if(splitPath.length === 3) {
+                    mainPath.value = splitPath[1];
+                    secondPath.value = splitPath[2];
+                    console.log("type", route.params.type);
+                    await getProductListBySubCategory(
+                        {subcategory: route.params.type}
+                    ).then(res => {
+                        console.log("res",res);
+                        productList.list = res?.data?.returnObjList;
+                    })
+                }
+               
+                
             })
+            return {
+                productList
+            }
         },
-        // components: {
-        //     SideBarViewVue
-        // }
+        components: {
+            ProductCard
+        }
     })
 </script>
 <template>
-    <!-- <SideBarViewVue></SideBarViewVue>
-    <router-view :key="$route.fullPath" /> -->
-    <div class="tetete">test</div>
+    <div class="row">
+        <ProductCard v-for="(proudct, key) in productList.list" :product="proudct"></ProductCard>
+    </div>
 </template>
 
 

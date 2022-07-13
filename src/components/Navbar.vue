@@ -14,6 +14,8 @@
                 await getAllCategory().then(res => {
                     console.log("res",res);
                     result.value = res?.data?.categoryObj;
+
+                    sessionStorage.setItem('categoryList', JSON.stringify(res.data));
                     store.dispatch('category',res?.data?.categoryObj);
                 })
             })

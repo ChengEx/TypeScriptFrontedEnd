@@ -8,6 +8,7 @@
             const router = useRouter();
             const route = useRoute();
             const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const product = reactive({
                 getProductList:{
                     _id:'',

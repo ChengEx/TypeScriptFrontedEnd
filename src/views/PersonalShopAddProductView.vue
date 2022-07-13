@@ -7,6 +7,7 @@
         setup() {
             const router = useRouter();
             const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             let addProductObj = reactive({
                 _id: store.getters['user']?.studentObj?._id,
                 name:'',

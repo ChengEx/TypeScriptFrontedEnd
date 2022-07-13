@@ -2,10 +2,13 @@
 import { computed, defineComponent, onMounted, reactive  } from "vue";
 import { useRoute } from "vue-router";
 import { getProductById } from '../api';
+import { useStore } from 'vuex';
 
     export default defineComponent({
         setup() {
             const route = useRoute();
+            const store = useStore();
+            store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const product = reactive({
                 getProductList:{
                     name: '',
@@ -53,7 +56,7 @@ import { getProductById } from '../api';
             <div class="row">
                 <div class="col-7">
                     <div style="margin-top: 20px;">
-                        <img :src="product.getProductList.productDetail.images[0]" />
+                        <img class="product_img" :src="product.getProductList.productDetail.images[0]" />
                     </div>
                     
                 </div>
@@ -111,8 +114,8 @@ import { getProductById } from '../api';
                                         </h3> 
                                     </div>
                                     <div class="row" style="display: flex; margin-top: 20px;">
-                                        <button style="width: 140px; border-radius: 5px; background-color: white;">私訊賣家</button>
-                                        <button style="width: 140px; margin-left: 20px; border-radius: 5px; background-color: white;">查看賣家商場</button>
+                                        <button class="detail_btn">私訊賣家</button>
+                                        <button class="detail_btn" style="margin-left: 5px;">查看賣家商場</button>
                                     </div>                        
                                 </div>
                             </div>                       
@@ -162,7 +165,9 @@ import { getProductById } from '../api';
 .category_price {
     display: flex;
 }
-
+.product_img{
+    width: 100%;
+}
 .createdBy_img {
     height: 90px;
     width: 90px;
@@ -180,4 +185,13 @@ import { getProductById } from '../api';
     padding: 20px;
     border-radius: 10px;
 }
+.detail_btn {
+    width: 140px;
+    border-radius: 5px;
+    background-color: white;
+}
+.detail_btn:hover {
+    background-color: rgb(196, 196, 196);
+}
+
 </style>

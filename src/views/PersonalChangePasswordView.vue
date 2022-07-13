@@ -43,6 +43,8 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const router = useRouter();
+        store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
+        
         const passwordObj = reactive({
             oldPassword:'',
             newPassword:'',
