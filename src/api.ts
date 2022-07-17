@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+//const url = 'http://localhost:8080'
 const url = 'http://localhost:4000'
 
 const APIRequest = axios.create({
@@ -16,7 +17,7 @@ APIRequest.interceptors.request.use((req: any)=>{
 })
 
 export const getAllCategory = () => {
-  return APIRequest.get('/api/category/getAll');
+  return APIRequest.get('/api/category/getAllCategory');
 }
 export const getCategoryByPath = (path: object) => {
   return APIRequest.post('/api/category/getCategoryByPath', path);

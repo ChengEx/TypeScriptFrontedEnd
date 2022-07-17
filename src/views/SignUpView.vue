@@ -33,30 +33,6 @@
         },
         data() {
             return{               
-                Citylists:[
-                    {item:'臺北市'},
-                    {item:'新北市'},
-                    {item:'桃園市'},
-                    {item:'臺中市'},
-                    {item:'臺南市'},
-                    {item:'高雄市'},
-                    {item:'新竹縣'},
-                    {item:'苗栗縣'},
-                    {item:'彰化縣'},
-                    {item:'南投縣'},
-                    {item:'雲林縣'},
-                    {item:'嘉義縣'},
-                    {item:'屏東縣'},
-                    {item:'宜蘭縣'},
-                    {item:'花蓮縣'},
-                    {item:'臺東縣'},
-                    {item:'澎湖縣'},
-                    {item:'金門縣'},
-                    {item:'連江縣'},
-                    {item:'基隆市'},
-                    {item:'新竹市'},
-                    {item:'嘉義市'},
-                ],
                 genderList:[
                     {item:'男'},
                     {item:'女'}

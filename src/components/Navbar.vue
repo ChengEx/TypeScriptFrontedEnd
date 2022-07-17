@@ -6,14 +6,16 @@
     import { useStore } from 'vuex';
     export default {
         setup() {
-            const result = ref({});
+            const result = reactive({
+                list:{}
+            });
             const store = useStore();
             const router = useRouter();
 
             onMounted(async () => { 
                 await getAllCategory().then(res => {
                     console.log("res",res);
-                    result.value = res?.data?.categoryObj;
+                    result.list = res?.data?.categoryObj;
 
                     sessionStorage.setItem('categoryList', JSON.stringify(res.data));
                     store.dispatch('category',res?.data?.categoryObj);
@@ -35,7 +37,7 @@
 
         <div class="collapse navbar-collapse mt-3 mb-3" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">                
-                <li v-for="item in result" class="nav-item insidefont" style="margin-right: 20px;">
+                <li v-for="item in result.list" class="nav-item insidefont" style="margin-right: 20px;">
                     <router-link class="nav-link" aria-current="page" :to="`/${item.categoryNameEN}`">{{ item.categoryName }}</router-link>  
                 </li>    
                 <!-- <li class="nav-item">

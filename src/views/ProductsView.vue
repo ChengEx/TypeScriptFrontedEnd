@@ -25,7 +25,9 @@
                     await getProductListByCategory(
                         { category: route.params.category }
                     ).then(res=> {
+                        console.log("test",res);
                         productList.list = res?.data?.returnObjList;
+                        
                     })
                 }
                 else if(splitPath.length === 3) {

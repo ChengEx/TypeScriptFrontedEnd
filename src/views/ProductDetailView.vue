@@ -138,7 +138,7 @@ import { useStore } from 'vuex';
                 </div>    
             </div>
             <div class="row" style="margin-bottom: 50px;">
-                <div v-for="(item, key) in product.getProductList.productDetail?.images">
+                <div v-for="(item, key) in product.getProductList.productDetail?.images" :key="key">
                     <img style="margin-top: 20px;" :src="item"/>
                 </div>
             </div>
