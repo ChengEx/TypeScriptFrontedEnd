@@ -76,7 +76,7 @@
 
 <style>
 #rightPage {
-    margin-left: 500px;
+    margin-left: 400px;
     margin-top: 50px;
     padding: 50px;
     width:100%;

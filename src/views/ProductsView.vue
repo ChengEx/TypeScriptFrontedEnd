@@ -21,7 +21,6 @@
                 const splitPath = route.path.split('/');
                 if(splitPath.length === 2) {
                     mainPath.value = splitPath[1];
-                    console.log("cate", route.params.category);
                     await getProductListByCategory(
                         { category: route.params.category }
                     ).then(res=> {
@@ -33,9 +32,13 @@
                 else if(splitPath.length === 3) {
                     mainPath.value = splitPath[1];
                     secondPath.value = splitPath[2];
+                    console.log("cate", mainPath.value);
                     console.log("type", route.params.type);
                     await getProductListBySubCategory(
-                        {subcategory: route.params.type}
+                        {   
+                            category: mainPath.value, 
+                            subcategory: route.params.type 
+                        }
                     ).then(res => {
                         console.log("res",res);
                         productList.list = res?.data?.returnObjList;

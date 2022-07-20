@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive  } from "vue";
 import { useRoute } from "vue-router";
-import { getProductById } from '../api';
+import { getProductById, addCollection } from '../api';
 import { useStore } from 'vuex';
 
     export default defineComponent({
@@ -11,6 +11,7 @@ import { useStore } from 'vuex';
             store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
             const product = reactive({
                 getProductList:{
+                    _id: '',
                     name: '',
                     category: '',
                     subcategory: '',
@@ -39,13 +40,21 @@ import { useStore } from 'vuex';
                     console.log("xxx",product.getProductList);
                 })
             });
+            async function addCollectionSubmit() {
+                await addCollection({
+                    productId: route.params.id,
+                    userId: store.getters['user']?.studentObj?._id
+                }).then(res => {
+                    console.log('addCollection',res);
+                })
+            };
             const createdDateFormate = computed(() => {
                 let date = new Date(product.getProductList.createdAt);
                 return date.getFullYear()+'/' + (date.getMonth()+1) + '/'+date.getDate();
             })
 
             return {
-                product, createdDateFormate
+                product, createdDateFormate, addCollectionSubmit
             }
         }
     })
@@ -84,7 +93,7 @@ import { useStore } from 'vuex';
                                 </div>
                             </div>
                             <div class="col-5" style="text-align: right; margin-top:10px;">
-                                <button class="favorite_btn">
+                                <button class="favorite_btn" @click="addCollectionSubmit()">
                                     <img style="width:30px;" src="../assets/img/heart.png" />
                                     <span style="font-size: 20px;">收藏</span>
                                 </button>

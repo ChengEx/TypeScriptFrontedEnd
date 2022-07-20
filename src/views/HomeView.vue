@@ -29,8 +29,5 @@ export default defineComponent({
 })
 </script>
 <style>
-    .notyet {
-        height:400px;
-        background-color: yellow;
-    }
+
 </style>

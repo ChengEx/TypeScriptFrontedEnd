@@ -64,7 +64,7 @@
                     <router-link to="/personal/changepassword">更改密碼</router-link>
                 </li>
                 <li>
-                    <router-link to="/personal/order">查看購買商品</router-link>
+                    <router-link to="/personal/order">查看訂購商品</router-link>
                 </li>
                 <li>
                     <router-link to="/personal/shop">個人販售商品</router-link>
@@ -126,7 +126,7 @@
 }
 
 #rightPage {
-    margin-left: 500px;
+    margin-left: 400px;
     margin-top: 50px;
     padding: 50px;
     /* height: 1500px; */

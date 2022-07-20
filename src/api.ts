@@ -58,3 +58,6 @@ export const updateProductById = (updateProductData: object) => {
 export const deleteProductById = (productId: object) => {
   return APIRequest.post('/api/product/deleteProductById', productId);
 }
+export const addCollection = (collection: object) => {
+  return APIRequest.post('/api/collection/addCollection', collection);
+}
