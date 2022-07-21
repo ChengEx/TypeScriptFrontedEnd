@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive  } from "vue";
 import { useRoute } from "vue-router";
-import { getProductById, addCollection } from '../api';
+import { getProductById, addCollection, getPersonalInformation, deleteCollection } from '../api';
 import { useStore } from 'vuex';
 
     export default defineComponent({
@@ -9,6 +9,11 @@ import { useStore } from 'vuex';
             const route = useRoute();
             const store = useStore();
             store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
+            const student = reactive({
+                _id:'',
+                name:'',
+                collectionProductId: []
+            });
             const product = reactive({
                 getProductList:{
                     _id: '',
@@ -24,7 +29,9 @@ import { useStore } from 'vuex';
                     },
                     // product creator
                     createdBy:{
+                        _id: '',
                         name: '',
+                        gender: '',
                         photo: '',
                         phone: '',
                         email: ''
@@ -35,26 +42,57 @@ import { useStore } from 'vuex';
                 await getProductById({ 
                     _id: route.params.id 
                 }).then(res => {
+                    console.log('createdby',res)
                     product.getProductList = res?.data?.productObj;
-
-                    console.log("xxx",product.getProductList);
                 })
+
+                await getPersonalInformation({
+                     _id: store.getters['user']?.studentObj?._id  
+                }).then(res => {
+                    student.collectionProductId = res?.data?.studentObj?.collectionProductId;
+                    console.log(student.collectionProductId);
+                })
+
             });
             async function addCollectionSubmit() {
                 await addCollection({
                     productId: route.params.id,
                     userId: store.getters['user']?.studentObj?._id
                 }).then(res => {
-                    console.log('addCollection',res);
+                    console.log(res);
+                })
+                await getPersonalInformation({
+                     _id: store.getters['user']?.studentObj?._id  
+                }).then(res => {
+                    student.collectionProductId = res?.data?.studentObj?.collectionProductId;
+                    console.log(student.collectionProductId);
                 })
             };
+            async function deleteCollectionSubmit() {
+                await deleteCollection({
+                    productId: route.params.id,
+                    userId: store.getters['user']?.studentObj?._id
+                }).then(res => {
+                    console.log(res);
+                })
+                await getPersonalInformation({
+                     _id: store.getters['user']?.studentObj?._id  
+                }).then(res => {
+                    student.collectionProductId = res?.data?.studentObj?.collectionProductId;
+                    console.log(student.collectionProductId);
+                })
+            }
+
             const createdDateFormate = computed(() => {
                 let date = new Date(product.getProductList.createdAt);
                 return date.getFullYear()+'/' + (date.getMonth()+1) + '/'+date.getDate();
             })
+            const collectionButtonCheck = computed(() => {
+                if(student.collectionProductId.find(item => item == route.params.id) !== undefined) return true;             
+            })
 
             return {
-                product, createdDateFormate, addCollectionSubmit
+                product, createdDateFormate, addCollectionSubmit, collectionButtonCheck, deleteCollectionSubmit
             }
         }
     })
@@ -92,9 +130,15 @@ import { useStore } from 'vuex';
                                     <span>建立時間: {{ createdDateFormate }}</span>
                                 </div>
                             </div>
-                            <div class="col-5" style="text-align: right; margin-top:10px;">
+                            <div v-if="collectionButtonCheck" class="col-5" style="text-align: right; margin-top:10px;" >
+                                <button class="favorite_btn" @click="deleteCollectionSubmit()">
+                                    <img style="width:30px;" src="../assets/img/withHeart.png" />
+                                    <span style="font-size: 20px;">收藏</span>
+                                </button>                           
+                            </div>
+                            <div v-else class="col-5" style="text-align: right; margin-top:10px;" >
                                 <button class="favorite_btn" @click="addCollectionSubmit()">
-                                    <img style="width:30px;" src="../assets/img/heart.png" />
+                                    <img style="width:30px;" src="../assets/img/withoutHeart.png" />
                                     <span style="font-size: 20px;">收藏</span>
                                 </button>
                             </div>
@@ -111,10 +155,23 @@ import { useStore } from 'vuex';
             <div class="row"  style="padding: 20px 200px; ">
                 <div class="created_user">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-7">
                             <div class="row">
                                 <div class="col-4">
-                                    <img class="createdBy_img" :src="product.getProductList.createdBy.photo"/>
+                                    <div v-if="product.getProductList.createdBy.photo == null">
+                                        <div v-if="product.getProductList.createdBy.gender == '男'">
+                                            <img class="createdBy_img" src="../assets/img/boy.png" alt="Avatar"/>
+                                        </div>
+                                        <div v-if="product.getProductList.createdBy.gender == '女'">
+                                            <img class="createdBy_img" src="../assets/img/woman.png" alt="Avatar"/>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div>
+                                            <img class="createdBy_img" :src="product.getProductList.createdBy.photo"/>
+                                        </div>
+                                    </div>
+                                    <!-- <img class="createdBy_img" :src="product.getProductList.createdBy.photo"/> -->
                                 </div>
                                 <div class="col-8">
                                     <div class="row" style="text-align:left;">
@@ -123,13 +180,18 @@ import { useStore } from 'vuex';
                                         </h3> 
                                     </div>
                                     <div class="row" style="display: flex; margin-top: 20px;">
-                                        <button class="detail_btn">私訊賣家</button>
-                                        <button class="detail_btn" style="margin-left: 5px;">查看賣家商場</button>
+                                        <router-link style="width:140px" :to="`/seller/${product.getProductList.createdBy._id}`">
+                                            <button class="detail_btn">私訊賣家</button>
+                                        </router-link>
+                                        
+                                        <router-link style="width:140px" :to="`/seller/${product.getProductList.createdBy._id}`">
+                                            <button class="detail_btn" style="margin-left: 5px;">查看賣家商場</button>
+                                        </router-link>
+                                        
                                     </div>                        
                                 </div>
                             </div>                       
                         </div>
-                        <div class="col-1"></div>
                         <div class="col-5" style="text-align: left;">
                             <div class="row" style="margin-top: 10px;">
                                 <h5>

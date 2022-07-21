@@ -53,7 +53,7 @@
                         <router-link class="insidefont" to="/personal" style="text-decoration: none; color: inherit; margin-right: 15px;">個人資訊</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="insidefont" to="/collection" style="text-decoration: none; color: inherit; margin-right: 15px;">收藏</router-link>
+                        <router-link class="insidefont" to="/collection" style="text-decoration: none; color: inherit; margin-right: 15px;">購物車</router-link>
                     </li>
                     <li class="nav-item" >
                         <button class="insidefont" @click="logout" style="border: none; background: none; margin-right: 15px;">登出</button>   

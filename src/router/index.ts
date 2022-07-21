@@ -16,6 +16,7 @@ import PersonalShopListProductView from '../views/PersonalShopListProductView.vu
 
 import ProductsView from '../views/ProductsView.vue';
 import ProductDetailView from '../views/ProductDetailView.vue';
+import SellerView from '../views/SellerView.vue';
 
 const history = createWebHashHistory();
 const router = createRouter({
@@ -26,30 +27,6 @@ const router = createRouter({
             name:'home',
             component: HomeView
         },
-        // {
-        //     path:'/:category',
-        //     name:'sidebar',
-        //     component: SideBarView,
-        //     // children:[
-        //     //     {
-        //     //         path:'/:category/:type',
-        //     //         name:'product',
-        //     //         component: ProductsView,
-        //     //     }
-        //     // ]
-        // },
-        // {
-        //     path:'/furniture',
-        //     name:'sidebar',
-        //     component: SideBarView,
-        //     children:[
-        //         {
-        //             path:'/furniture/table',
-        //             name:'product',
-        //             component: ProductsView
-        //         }
-        //     ]
-        // },
         {
             path:'/:category',
             name:'sidebar',
@@ -142,6 +119,11 @@ const router = createRouter({
             name:'productdetail',
             component: ProductDetailView
         },
+        {
+            path:'/seller/:id',
+            name:'seller',
+            component: SellerView
+        }
     ]
 })
 

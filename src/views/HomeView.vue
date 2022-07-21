@@ -13,8 +13,9 @@
     
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
+import { getAllCategory } from '../api';
 import Carousel from '../components/Carousel.vue';
 export default defineComponent({
     name:'Home',
@@ -23,6 +24,13 @@ export default defineComponent({
     },
     setup() {
         const store = useStore();
+        onMounted(async() => {
+            await getAllCategory().then(res => {
+                sessionStorage.setItem('categoryList', JSON.stringify(res.data));
+                store.dispatch('category',res?.data?.categoryObj);
+            })
+        })
+        
         store.dispatch('user', JSON.parse(<string>sessionStorage.getItem('profile')));
     }
 

@@ -61,3 +61,9 @@ export const deleteProductById = (productId: object) => {
 export const addCollection = (collection: object) => {
   return APIRequest.post('/api/collection/addCollection', collection);
 }
+export const getCollectionById = (userId: object) => {
+  return APIRequest.post('/api/collection/getCollectionById', userId);
+}
+export const deleteCollection = (collection: object) => {
+  return APIRequest.post('/api/collection/deleteCollection', collection);
+}
