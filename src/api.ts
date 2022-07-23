@@ -67,3 +67,7 @@ export const getCollectionById = (userId: object) => {
 export const deleteCollection = (collection: object) => {
   return APIRequest.post('/api/collection/deleteCollection', collection);
 }
+
+export const getAllAnnouncement = () => {
+  return APIRequest.get('/api/announcement/getAll');
+}

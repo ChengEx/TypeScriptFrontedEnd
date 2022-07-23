@@ -25,8 +25,8 @@
         <div class="each_card">
             <router-link :to="`/product/${product._id}`" style="text-decoration: none; color: inherit;">
                 <img class="card-img-top mt-1 pCard_img" :src="product?.productDetail?.images[0]">
-                <div class="card-body">
-                    <div class="row p-0 mt-3">
+                <div class="card-body pb-0">
+                    <div class="row pt-3">
                     <h6 class="col-auto me-auto p-0">{{product.name}}</h6>
                     <h6 class="col-auto p-0">NT$ {{product?.productDetail?.price}}</h6>
                     </div>      
