@@ -14,6 +14,7 @@ import { useStore } from 'vuex';
                 name:'',
                 collectionProductId: []
             });
+            const studentId = store.getters['user']?.studentObj?._id;
             const product = reactive({
                 getProductList:{
                     _id: '',
@@ -55,32 +56,43 @@ import { useStore } from 'vuex';
 
             });
             async function addCollectionSubmit() {
-                await addCollection({
-                    productId: route.params.id,
-                    userId: store.getters['user']?.studentObj?._id
-                }).then(res => {
-                    console.log(res);
-                })
-                await getPersonalInformation({
-                     _id: store.getters['user']?.studentObj?._id  
-                }).then(res => {
-                    student.collectionProductId = res?.data?.studentObj?.collectionProductId;
-                    console.log(student.collectionProductId);
-                })
+               
+                if(store.getters['user']?.studentObj?._id === undefined) {
+                    alert('請先登入會員');
+                }else{
+                    await addCollection({
+                        productId: route.params.id,
+                        userId: store.getters['user']?.studentObj?._id
+                    }).then(res => {
+                        console.log(res);
+                    })
+                    await getPersonalInformation({
+                        _id: store.getters['user']?.studentObj?._id  
+                    }).then(res => {
+                        student.collectionProductId = res?.data?.studentObj?.collectionProductId;
+                        console.log(student.collectionProductId);
+                    })
+                }
+               
             };
             async function deleteCollectionSubmit() {
-                await deleteCollection({
-                    productId: route.params.id,
-                    userId: store.getters['user']?.studentObj?._id
-                }).then(res => {
-                    console.log(res);
-                })
-                await getPersonalInformation({
-                     _id: store.getters['user']?.studentObj?._id  
-                }).then(res => {
-                    student.collectionProductId = res?.data?.studentObj?.collectionProductId;
-                    console.log(student.collectionProductId);
-                })
+                if(store.getters['user']?.studentObj?._id === undefined) {
+                    alert('請先登入會員');
+                }else{
+                    await deleteCollection({
+                        productId: route.params.id,
+                        userId: store.getters['user']?.studentObj?._id
+                    }).then(res => {
+                        console.log(res);
+                    })
+                    await getPersonalInformation({
+                        _id: store.getters['user']?.studentObj?._id  
+                    }).then(res => {
+                        student.collectionProductId = res?.data?.studentObj?.collectionProductId;
+                        console.log(student.collectionProductId);
+                    })
+                }
+                
             }
 
             const createdDateFormate = computed(() => {
@@ -92,7 +104,7 @@ import { useStore } from 'vuex';
             })
 
             return {
-                product, createdDateFormate, addCollectionSubmit, collectionButtonCheck, deleteCollectionSubmit
+                studentId, product, createdDateFormate, addCollectionSubmit, collectionButtonCheck, deleteCollectionSubmit
             }
         }
     })
@@ -130,18 +142,21 @@ import { useStore } from 'vuex';
                                     <span>建立時間: {{ createdDateFormate }}</span>
                                 </div>
                             </div>
-                            <div v-if="collectionButtonCheck" class="col-5" style="text-align: right; margin-top:10px;" >
-                                <button class="favorite_btn" @click="deleteCollectionSubmit()">
-                                    <img style="width:30px;" src="../assets/img/withHeart.png" />
-                                    <span style="font-size: 20px;">收藏</span>
-                                </button>                           
+                            <div v-if="studentId !== undefined"  class="col-5" style="text-align: right; margin-top:10px;">
+                                <div v-if="collectionButtonCheck" >
+                                    <button class="favorite_btn" @click="deleteCollectionSubmit()">
+                                        <img style="width:30px;" src="../assets/img/withHeart.png" />
+                                        <span style="font-size: 20px;">收藏</span>
+                                    </button>                           
+                                </div>
+                                <div v-else >
+                                    <button class="favorite_btn" @click="addCollectionSubmit()">
+                                        <img style="width:30px;" src="../assets/img/withoutHeart.png" />
+                                        <span style="font-size: 20px;">收藏</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div v-else class="col-5" style="text-align: right; margin-top:10px;" >
-                                <button class="favorite_btn" @click="addCollectionSubmit()">
-                                    <img style="width:30px;" src="../assets/img/withoutHeart.png" />
-                                    <span style="font-size: 20px;">收藏</span>
-                                </button>
-                            </div>
+                            
                         </div>
                         
                         <hr class="hrhr mt-1">

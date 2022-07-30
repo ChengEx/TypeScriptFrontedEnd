@@ -14,7 +14,7 @@
 
             onMounted(async () => { 
                 await getAllCategory().then(res => {
-                    console.log("res",res);
+                    //console.log("res",res);
                     result.list = res?.data?.categoryObj;
 
                     sessionStorage.setItem('categoryList', JSON.stringify(res.data));

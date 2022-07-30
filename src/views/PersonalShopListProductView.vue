@@ -41,28 +41,13 @@
                     alert("成功刪除");
                 })
             }
-            // watch(() => productList.list, (val, old) =>{
-            //     console.log("old1", val);
-            //      console.log("old2", old);
-            //     productList.list = val
-            //     getProductListByUserId({
-            //         _id: userId
-            //     }).then(res=> {
-            //         productList.list = res?.data?.getProductList?.productId;             
-            //     })
-            // });
             return {
                 productList, deleteProduct
             }
-        },
-        
+        },     
         components: {
             ProductCard
         },
-        methods: {
-
-        }
-
     })
 </script>
 
@@ -75,7 +60,6 @@
         </div>
     </div>
     <div class="row" style="margin-top: 20px;">
-        <!-- <ProductCard v-for="(product,index) in productList.list" :key="index" :product="product" />   -->
         <div class="card col-3" v-for="(product,index) in productList.list" :key="index" style=" border: none">
             <div style="border: 2px  solid gray; border-radius: 5px; padding: 2px; margin:10px">
                 <div class="row" style="display: flex; float: right; margin: 0 ; --bs-gutter-x: 0">
