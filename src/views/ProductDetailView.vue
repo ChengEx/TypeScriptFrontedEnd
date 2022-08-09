@@ -1,7 +1,7 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive  } from "vue";
+import { computed, defineComponent, onMounted, reactive, ref  } from "vue";
 import { useRoute } from "vue-router";
-import { getProductById, addCollection, getPersonalInformation, deleteCollection } from '../api';
+import { getProductById, addCollection, getPersonalInformation, deleteCollection, addChatRoom } from '../api';
 import { useStore } from 'vuex';
 
     export default defineComponent({
@@ -15,6 +15,8 @@ import { useStore } from 'vuex';
                 collectionProductId: []
             });
             const studentId = store.getters['user']?.studentObj?._id;
+            const student_id = ref({});
+            student_id.value = store.getters['user']?.studentObj?._id;
             const product = reactive({
                 getProductList:{
                     _id: '',
@@ -93,6 +95,16 @@ import { useStore } from 'vuex';
                     })
                 }
                 
+            };
+            async function gotoChatRoom() {
+                console.log('1',store.getters['user']?.studentObj?._id)
+                console.log('2',product.getProductList._id);
+                await addChatRoom({
+                    user1Id: store.getters['user']?.studentObj?._id,
+                    user2Id: product.getProductList.createdBy._id
+                }).then(res=> {
+                    console.log("res is here",res);
+                })
             }
 
             const createdDateFormate = computed(() => {
@@ -104,7 +116,7 @@ import { useStore } from 'vuex';
             })
 
             return {
-                studentId, product, createdDateFormate, addCollectionSubmit, collectionButtonCheck, deleteCollectionSubmit
+                studentId, product, createdDateFormate, addCollectionSubmit, collectionButtonCheck, deleteCollectionSubmit, gotoChatRoom, student_id
             }
         }
     })
@@ -146,13 +158,13 @@ import { useStore } from 'vuex';
                                 <div v-if="collectionButtonCheck" >
                                     <button class="favorite_btn" @click="deleteCollectionSubmit()">
                                         <img style="width:30px;" src="../assets/img/withHeart.png" />
-                                        <span style="font-size: 20px;">收藏</span>
+                                        <span style="font-size: 20px;">刪除購物車</span>
                                     </button>                           
                                 </div>
                                 <div v-else >
                                     <button class="favorite_btn" @click="addCollectionSubmit()">
                                         <img style="width:30px;" src="../assets/img/withoutHeart.png" />
-                                        <span style="font-size: 20px;">收藏</span>
+                                        <span style="font-size: 20px;">加入購物車</span>
                                     </button>
                                 </div>
                             </div>
@@ -194,11 +206,8 @@ import { useStore } from 'vuex';
                                             {{ product.getProductList.createdBy.name }}
                                         </h3> 
                                     </div>
-                                    <div class="row" style="display: flex; margin-top: 20px;">
-                                        <router-link style="width:140px" :to="`/seller/${product.getProductList.createdBy._id}`">
-                                            <button class="detail_btn">私訊賣家</button>
-                                        </router-link>
-                                        
+                                    <div class="row" style="display: flex; margin-top: 20px;">                                      
+                                        <button v-if="product.getProductList.createdBy._id !== student_id" class="detail_btn" @click="gotoChatRoom">私訊賣家</button>                                                                
                                         <router-link style="width:140px" :to="`/seller/${product.getProductList.createdBy._id}`">
                                             <button class="detail_btn" style="margin-left: 5px;">查看賣家商場</button>
                                         </router-link>

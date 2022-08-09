@@ -62,9 +62,11 @@ export default defineComponent({
                     <div class="p-2">
                         <h4>購物車</h4>
                     </div>
-                    <div v-for="(item, key) in collectionList.getCollectionList" :key="key" class="d-flex flex-row justify-content-between align-items-center p-3 mt-4 px-3 rounded" style="background: #E0E0E0;" >
+                    <div v-for="(item, key) in collectionList.getCollectionList" :key="key" class="d-flex flex-row justify-content-between align-items-center p-3 mt-4 px-3 rounded" style="background: #E0E0E0;" >                  
                         <div class="mr-1">
-                            <img class="rounded" :src="item.productDetail.images[0]"  width="90"/>
+                            <router-link :to="`/product/${item._id}`" style="text-decoration: none; color: inherit;">
+                                <img class="rounded" :src="item.productDetail.images[0]"  width="90"/>
+                            </router-link> 
                         </div>
                         <div class="d-flex flex-column align-items-center product-details mt-2">
                             <h6 class="font-weight-bold">{{ item.name }}</h6>

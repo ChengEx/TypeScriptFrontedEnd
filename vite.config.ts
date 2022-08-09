@@ -10,6 +10,7 @@ export default defineConfig({
   //   }
   // },
   plugins: [vue()],
+  base:"/",
   server: {
     host: '0.0.0.0',
     port: 8991,
@@ -17,9 +18,10 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://xxxx:4000',
+        // target:'https://second-hand-market.com',
         secure: false,
         changeOrigin: true,
-        
+        // rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },

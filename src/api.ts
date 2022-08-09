@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const url = 'http://localhost:8080'
-const url = 'http://localhost:4000'
+const url = 'http://localhost:8080'
+// const url = 'http://localhost:4000'
 
 const APIRequest = axios.create({
     baseURL: url,
@@ -70,4 +70,11 @@ export const deleteCollection = (collection: object) => {
 
 export const getAllAnnouncement = () => {
   return APIRequest.get('/api/announcement/getAll');
+}
+
+export const getChatRoomByUserId = (userId: object) => {
+  return APIRequest.post('/api/message/getChatRoomByUserId', userId);
+}
+export const addChatRoom = (id: object) => {
+  return APIRequest.post('/api/message/addChatRoom', id);
 }
